@@ -1,0 +1,286 @@
+
+// Conductor calculation for Freitas Frey elliptic curve F = F_(a,b) = E^(k1,k2)_(a,b) for r = 11, (k1,k2) = (2,1).
+
+// K1 = 11th cyclotomic field
+K1<z>:=CyclotomicField(11);
+R1:=PolynomialRing(K1,2);
+fracR1<x1,y1>:=FieldOfFractions(R1);
+
+// F = F(a,b) is constructed over K1 first
+k1:=2;
+k2:=1;
+f1:=x1^2+(z^k1+1/z^k1)*x1*y1+y1^2;
+f2:=x1^2+(z^k2+1/z^k2)*x1*y1+y1^2;
+alpha:=z^k2+1/z^k2-z^k1-1/z^k1;
+beta:=2-z^k2-1/z^k2;
+gamma:=z^k1+1/z^k1-2;
+A:=alpha*(x1+y1)^2;
+B:=beta*f1;
+C:=gamma*f2;
+
+S1<X1>:=PolynomialRing(fracR1);
+F:=EllipticCurve(X1*(X1-A)*(X1+B));
+
+// Put E into short Weierstrass model
+F:=WeierstrassModel(F);
+AI:=aInvariants(F);
+
+
+
+// K = maximal real subfield of 11th cyclotomic field
+// F = F(a,b) descends to K and recast it to be defined over K
+polsQ<X>:=PolynomialRing(Rationals());
+K:=NumberField(X^5 + X^4 - 4*X^3 - 3*X^2 + 3*X + 1);
+OK:=Integers(K);
+I2:=Factorization(2*OK)[1,1];
+I11:=Factorization(11*OK)[1,1];
+
+R<x,y>:=PolynomialRing(K,2);
+_,gm:=IsSubfield(K,K1);
+
+AIn:=R1!AI[4];
+NM:=[Evaluate(c,[x,y]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI4:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+AIn:=R1!AI[5];
+NM:=[Evaluate(c,[x,y]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI6:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+// NAI4 and NAI6 now are polynomials over K which define F = F(a,b) over K
+
+// Returns the Frey elliptic curve F(x,y) over K twisted by d.
+FreyF:=function(x,y,d)
+  E:=QuadraticTwist(EllipticCurve([Evaluate(NAI4,[x,y]),Evaluate(NAI6,[x,y])]),d);
+  return E;
+end function;
+
+
+// Double check the discriminant of F = F(x,y) is of the correct form: 
+// a scalar multiple of (x+y)^4 f1^2 f2^2.
+Fxy:=FreyF(x1,y1,1);
+D:=Discriminant(Fxy);
+assert Degree(R1!(D/(x1+y1)^4/f1^2/f2^2)) eq 0;
+
+
+
+
+// F and its twist by -11
+L<x2,y2>:=FieldOfFractions(R);
+
+Fxy:=FreyF(x2,y2,1);
+CI:=cInvariants(Fxy);
+D:=Discriminant(Fxy);
+
+
+Fxyt:=FreyF(x2,y2,-11);
+CIt:=cInvariants(Fxyt);
+Dt:=Discriminant(Fxyt);
+
+
+// Degrees of c_4, c_6, Delta.
+assert [Degree(R!CI[1]), Degree(R!CI[2]), Degree(R!D)] eq [4, 6, 12];
+
+
+// Check semi-stability of F away from 2, 11.
+print "The resultant of A and B with respect to x (resp. y) is a constant times y (resp. x).";
+print "The constant in both cases is only divisible by primes above 11.";
+print "We conclude over primes away from 2 and 11, F has semi-stable reduction.";
+
+Zx:=Coefficients(Resultant(R1!A,R1!B,R1.1))[1];
+assert PrimeDivisors(Integers()!Norm(Zx)) subset {11};
+
+Zy:=Coefficients(Resultant(R1!A,R1!B,R1.2))[1];
+assert PrimeDivisors(Integers()!Norm(Zx)) subset {11};
+
+
+S<X>:=PolynomialRing(K);
+
+// Take the polynomial f in a, b and expand into powers of a.
+function SymbVala(f);
+  taylorexp := Evaluate(f,[S!X,S!1]);
+
+  return Coefficients(taylorexp);
+end function;
+
+
+// Take the polynomial f in a, b and expand as powers of a+b.
+function SymbValab(f);
+  taylorexp := Evaluate(f,[S!(X-1),S!1]);
+
+  return Coefficients(taylorexp);
+end function;
+
+CL4a:=SymbVala(R!CI[1]);
+CL6a:=SymbVala(R!CI[2]);
+Da:=SymbVala(R!D);
+
+CL4ab:=SymbValab(R!CI[1]);
+CL6ab:=SymbValab(R!CI[2]);
+Dab:=SymbValab(R!D);
+
+CL4abt:=SymbValab(R!CIt[1]);
+CL6abt:=SymbValab(R!CIt[2]);
+Dabt:=SymbValab(R!Dt);
+
+
+print "**********************";
+print "Case 4 divides a for F";
+print "**********************";
+
+print "We expand c_4, c_6, Delta into powers of a in order of increasing degree.";
+print "The valuations of the coefficients are:";
+[Valuation(a,I2) : a in CL4a];
+[Valuation(a,I2) : a in CL6a];
+[Valuation(a,I2) : a in Da];
+
+
+print "Thus we have that (v(c_4), v(c_6), v(Delta)) = (8, 11, 16).";
+print "We twist by 1/4 to get a model with (v(c_4), v(c_6), v(Delta)) = (4, 5, 4).";
+
+print "To use Papadopoulos Table IV for showing the reduction type is III and conductor exponent f = 3, we would still need to check supplementary conditions.";
+print "Instead, we note since the discriminant has valuation 4, the model is minimal and only one round of Tate's algorithm is needed.";
+print "Hence sampling modulo 2^6 is sufficient to establish the conductor exponent f = 3.";
+print "Proving conductor exponent f = 3 by sampling modulo 2^6 ... ";
+for a,b in [1..64] do
+  if [a mod 2, b mod 2] ne [0, 0] and a*b mod 4 eq 0 then
+    F:=FreyF(a,b,1/4);
+
+    LI:=LocalInformation(F,I2);
+    CI:=cInvariants(F);
+    D:=Discriminant(F);
+
+    assert Valuation(CI[1],I2) eq 4;
+    assert Valuation(CI[2],I2) eq 5;
+    assert Valuation(D,I2) eq 4;
+    assert LI[3] eq 3;
+
+    //print a, b, LI[3], LI[5];
+  end if;
+end for;
+printf "done.\n\n";
+
+
+
+print "*************************************";
+print "Case 4 divides a for F twisted by -11";
+print "*************************************";
+
+print "The conductor is still f = 3 as Q(\sqrt{-11}) is unramified at 2.";
+
+
+
+print "**************************";
+print "Case 8 divides a + b for F";
+print "**************************";
+
+print "We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.";
+print "The valuations of the coefficients are:";
+[Valuation(a,I2) : a in CL4ab];
+[Valuation(a,I2) : a in CL6ab];
+[Valuation(a,I2) : a in Dab];
+
+print "Thus we have that (v(c_4), v(c_6), v(Delta)) = (8, 12, \gt 24).";
+print "By Papadopoulos Table IV, the reduction type is I_n, n > 0, and conductor exponent f = 1.";
+
+printf "Double checking these valuations by sampling ... ";
+for a,b in [1..32] do
+  if Valuation(a+b,2) ge 3 and a*b mod 2 ne 0 then
+    F:=FreyF(a,b,1);
+
+    LI:=LocalInformation(F,I2);
+    CI:=cInvariants(F);
+    D:=Discriminant(F);
+
+    assert Valuation(CI[1],I2) eq 8;
+    assert Valuation(CI[2],I2) eq 12;
+    assert Valuation(D,I2) gt 24;
+    assert LI[3] eq 1;
+
+    //print a, b, LI[3], LI[5];
+  end if;
+end for;
+printf "done.\n\n";
+
+
+print "*****************************************";
+print "Case 8 divides a + b for F twisted by -11";
+print "*****************************************";
+
+print "The conductor is still f = 1 as Q(\sqrt{-11}) is unramified at 2.";
+
+
+
+
+print "***************************";
+print "Case 11 divides a + b for F";
+print "***************************";
+
+
+print "We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.";
+print "The valuations of the coefficients are:";
+[Valuation(a,I11) : a in CL4ab];
+[Valuation(a,I11) : a in CL6ab];
+[Valuation(a,I11) : a in Dab];
+
+print "Thus we have that (v(c_4), v(c_6), v(Delta)) = (4, 6, \gt 12)";
+print "By Papadopoulos Table IV, the reduction type is I_n, n > 0, and conductor exponent f = 1.";
+
+printf "Double checking these valuations by sampling ... ";
+for a,b in [1..121] do
+  if Valuation(a+b,11) ge 1 and a*b mod 11 ne 0 then
+    F:=FreyF(a,b,1);
+
+    LI:=LocalInformation(F,I11);
+    CI:=cInvariants(F);
+    D:=Discriminant(F);
+
+    assert Valuation(CI[1],I11) eq 4;
+    assert Valuation(CI[2],I11) eq 6;
+    assert Valuation(D,I11) gt 12;
+    assert LI[3] eq 1;
+    
+    //print a, b, LI[3], LI[5];
+  end if;
+end for;
+printf "done.\n\n";
+
+
+
+print "**************************************************";
+print "Case 11 does not divide a + b for F twisted by -11";
+print "**************************************************";
+
+print "We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.";
+print "The valuations of the coefficients are:";
+[Valuation(a,I11) : a in CL4abt];
+[Valuation(a,I11) : a in CL6abt];
+[Valuation(a,I11) : a in Dabt];
+
+print "Thus we have that (v(c_4), v(c_6), v(Delta)) = (12, 18, 36).";
+print "By Papadopoulos Table IV, the reduction type is I_0 and conductor exponent f = 0.";
+
+printf "Double checking these valuations by sampling ... ";
+for a,b in [1..121] do
+  if Valuation(a+b,11) eq 0 then
+    F:=FreyF(a,b,-11);
+
+    LI:=LocalInformation(F,I11);
+    CI:=cInvariants(F);
+    D:=Discriminant(F);
+
+    assert Valuation(CI[1],I11) eq 12;
+    assert Valuation(CI[2],I11) eq 18;
+    assert Valuation(D,I11) eq 36;
+    assert LI[3] eq 0;
+
+    //print a, b, LI[3], LI[5];
+  end if;
+end for;
+printf "done.";
+
+
+
+
+

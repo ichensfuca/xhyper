@@ -1,0 +1,191 @@
+
+// We prove the irreducibility of \rho_{F,p} for p \ge 5, p \not= 13.
+
+// Create the maximal real subfield of Q(\zeta_11).
+polsQ<X>:=PolynomialRing(Rationals());
+K:=NumberField(X^5 + X^4 - 4*X^3 - 3*X^2 + 3*X + 1);
+OK:=Integers(K);
+I2:=Factorization(2*OK)[1,1];
+I11:=Factorization(11*OK)[1,1];
+
+// Compute the quantity B whose prime divisors contain the exception to an associated character being unramified from the criterion of Freitas-Siksek.
+
+G:=Automorphisms(K);
+
+Signatures:=[ <k1,k2,k3,k4,k5> : k1, k2, k3, k4, k5 in {0,12} | <k1,k2,k3,k4,k5> notin {<0,0,0,0,0>, <12,12,12,12,12>}];
+
+function twistednorm(G, alpha, s);
+   x:=1;
+   for j:=1 to #G do
+      x:=x*G[j](alpha)^s[j];
+   end for;
+
+   return x;
+end function;
+
+OK:=Integers(K);
+UK,f:=UnitGroup(OK);
+
+R:=[];
+for s in Signatures do
+  L:=[OK*(twistednorm(G, f(UK.i),s) - 1) : i in [2..5]];
+  As:=Norm( Gcd(Gcd(Gcd(L[1],L[2]),L[3]),L[4]) );
+  R:=Append(R,As);
+end for;
+
+// Compute the required Ray class group
+I11:=Factorization(11*OK)[1,1];
+RayClassGroup(2^2*I11,[1,2,3,4,5]);
+
+// Find the K-rational points on a modular curve X of genus 1 which has rank 0 over K. 
+procedure test_curve(X,N);
+
+// Base change to K.
+EK := ChangeRing(X,K);
+
+// Rank is 0 over K so all K-rational points are torsion over K.
+assert Rank(EK) eq 0;
+
+// Torsion subgroup over K.
+TK, TKtoEK := TorsionSubgroup(EK);
+
+// The map to j-line.
+j := jInvariant(EK,N);
+
+// Loop through all torsion points over K and compute the j-invariants of the K-rational points.
+for n := 1 to #TK do
+  P := n * TKtoEK(TK.1);
+  print P, Evaluate(j,P);
+end for;
+
+end procedure;
+
+
+
+
+// The modular curve X_0(20).
+// Deals with p = 5.
+N:=20;
+X := SmallModularCurve(N);
+Genus(X);
+test_curve(X,N);
+
+// The modular curve X_0(14).
+// Deals with p = 7.
+N:=14;
+X := SmallModularCurve(N);
+Genus(X);
+test_curve(X,N);
+
+// The modular curve X_0(11).
+// Deals with p = 11.
+N:=11;
+X := SmallModularCurve(N);
+Genus(X);
+test_curve(X,N);
+
+
+// The modular curve X_0(17).
+// Deals with p = 17.
+N:=17;
+X := SmallModularCurve(N);
+Genus(X);
+test_curve(X,N);
+
+
+// The modular curve X_0(19).
+// Deals with p = 19.
+N:=19;
+X := SmallModularCurve(N);
+Genus(X);
+test_curve(X,N);
+
+
+// The modular curve X_0(26)
+// Deals with p = 13.
+N:=26;
+X:=SmallModularCurve(N);
+Genus(X);
+w2:=AtkinLehnerInvolution(X,26,2);
+
+G2:=AutomorphismGroup(X,[w2]);
+E,psi:=CurveQuotient(G2);
+
+EK:=ChangeRing(E,K);
+assert Rank(EK) eq 0;
+TK, TKtoEK := TorsionSubgroup(EK);
+
+P1:=TKtoEK(TK.1);
+Y1:=P1@@psi;
+Y1K:=ChangeRing(Y1,K);
+Points(Y1K);
+
+P2:=TKtoEK(2*TK.1);
+Y2:=P2@@psi;
+Y2K:=ChangeRing(Y2,K);
+Points(Y2K);
+
+P3:=TKtoEK(3*TK.1);
+Y3:=P3@@psi;
+Y3K:=ChangeRing(Y3,K);
+Points(Y3K);
+
+
+
+
+// K1 = 11th cyclotomic field
+K1<z>:=CyclotomicField(11);
+R1:=PolynomialRing(K1,2);
+fracR1<x1,y1>:=FieldOfFractions(R1);
+
+// F = F(a,b) is constructed over K1 first
+k1:=2;
+k2:=1;
+f1:=x1^2+(z^k1+1/z^k1)*x1*y1+y1^2;
+f2:=x1^2+(z^k2+1/z^k2)*x1*y1+y1^2;
+alpha:=z^k2+1/z^k2-z^k1-1/z^k1;
+beta:=2-z^k2-1/z^k2;
+gamma:=z^k1+1/z^k1-2;
+A:=alpha*(x1+y1)^2;
+B:=beta*f1;
+C:=gamma*f2;
+
+S1<X1>:=PolynomialRing(fracR1);
+F:=EllipticCurve(X1*(X1-A)*(X1+B));
+
+// Put E into short Weierstrass model
+F:=WeierstrassModel(F);
+AI:=aInvariants(F);
+
+
+R:=PolynomialRing(K,2);
+fracR<x,y>:=FieldOfFractions(R);
+_,gm:=IsSubfield(K,K1);
+
+AIn:=R1!AI[4];
+NM:=[Evaluate(c,[x,y]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI4:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+AIn:=R1!AI[5];
+NM:=[Evaluate(c,[x,y]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI6:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+// NAI4 and NAI6 now are polynomials over K which define F = F(a,b) over K
+
+// Returns the Frey elliptic curve F(x,y) over K denoted locally in the program by E.
+E:=EllipticCurve([Evaluate(NAI4,[x,y]),Evaluate(NAI6,[x,y])]);
+
+// The numerator and denominator of the j-invariant of E.
+jE:=jInvariant(E);
+nE:=Numerator(jE);
+dE:=Numerator(jE);
+
+// Check for each of the possible j-invariants, no valid solution a, b can give rise to F = F(a,b) have the given j-invariant.
+jList:=[16581375, -3375, -32768, -121, -24729001, -882216989/131072, -297756989/2, -884736];
+for j in jList do
+  print j, Factorization(nE-j*dE);
+end for;
+
+

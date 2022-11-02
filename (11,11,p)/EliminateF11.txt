@@ -1,0 +1,95 @@
+
+// Freitas Frey elliptic curve F = F_(a,b) = E^(k1,k2)_(a,b) for r = 11, (k1,k2) = (2,1).
+
+
+// This function computes the running time (in hours).
+t0:=Realtime();
+function Realhours();
+   return Realtime(t0)/3600;
+end function;
+
+
+// K1 = 11th cyclotomic field
+// F = F(a,b) is constructed over K1 first
+K1<z>:=CyclotomicField(11);
+R1:=PolynomialRing(K1,2);
+fracR1<x,y>:=FieldOfFractions(R1);
+
+
+k1:=2;
+k2:=1;
+f1:=x^2+(z^k1+1/z^k1)*x*y+y^2;
+f2:=x^2+(z^k2+1/z^k2)*x*y+y^2;
+alpha:=z^k2+1/z^k2-z^k1-1/z^k1;
+beta:=2-z^k2-1/z^k2;
+gamma:=z^k1+1/z^k1-2;
+A:=alpha*(x+y)^2;
+B:=beta*f1;
+C:=gamma*f2;
+
+S1<X1>:=PolynomialRing(fracR1);
+E:=EllipticCurve(X1*(X1-A)*(X1+B));
+E:=WeierstrassModel(E);
+AI:=aInvariants(E);
+
+
+// K = maximal real subfield of 11th cyclotomic field
+// F = F(a,b) descends to K and recast it to be defined over K
+polsQ<X>:=PolynomialRing(Rationals());
+K<z>:=NumberField(X^5 + X^4 - 4*X^3 - 3*X^2 + 3*X + 1);
+OK:=Integers(K);
+I2:=Factorization(2*OK)[1,1];
+I11:=Factorization(11*OK)[1,1];
+
+R<x1,y1>:=PolynomialRing(K,2);
+_,gm:=IsSubfield(K,K1);
+
+AIn:=R1!AI[4];
+NM:=[Evaluate(c,[x1,y1]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI4:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+AIn:=R1!AI[5];
+NM:=[Evaluate(c,[x1,y1]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI6:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+
+// Returns the Frey elliptic curve F(x,y) over K twisted by d.
+FreyF:=function(x,y,d)
+  E:=QuadraticTwist(EllipticCurve([Evaluate(NAI4,[x,y]),Evaluate(NAI6,[x,y])]),d);
+  return E;
+end function;
+
+
+
+
+
+
+
+N:=I2;
+print "Computing forms at level I2 ...";
+forms:=Eigenforms(NewSubspace(HilbertCuspForms(K,N)));
+print "Done !";
+print "There are ", #forms, "newforms";
+print "The degrees of coefficient fields are", [Degree(CoefficientField(f)): f in forms];
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+
+
+
+
+
+N:=I2*I11;
+print "Computing forms at level I2*I11...";
+forms:=Eigenforms(NewSubspace(HilbertCuspForms(K,N)));
+print "Done !";
+print "There are ", #forms, "newforms";
+print "The degrees of coefficient fields are", [Degree(CoefficientField(f)): f in forms];
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+
+
+
+
+

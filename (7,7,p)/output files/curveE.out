@@ -1,0 +1,55 @@
+Magma V2.25-5     Fri Oct  1 2021 11:59:13 on gaby     [Seed = 2777914928]
+Type ? for help.  Type <Ctrl>-D to quit.
+Eliminating forms at level 2^2*7^2 = 196
+*********************************
+Form no 1 eliminated
+*********************************
+Form no 2  not eliminated !
+*********************************
+Form no 3 eliminated
+
+++++++++++++++++++++++ 0.001
+
+Only form no 2 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,0) :
+-2
+0
+-a - 1
+
+++++++++++++++++++++++ 0.001
+
+
+Eliminating forms at level 2^3*7^2 = 392
+*********************************
+Form no 1  not eliminated !
+*********************************
+Form no 2 eliminated
+*********************************
+Form no 3 eliminated
+*********************************
+Form no 4 eliminated
+*********************************
+Form no 5 eliminated
+*********************************
+Form no 6 eliminated
+*********************************
+Form no 7 eliminated
+*********************************
+Form no 8 eliminated
+
+++++++++++++++++++++++ 0.002
+
+Only form no 1 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,-1) :
+0
+-2
+1
+-4
+-1
+2
+-a - 1
+-a - 1
+++++++++++++++++++++++ 0.002
+
+
+Total time: 10.179 seconds, Total memory usage: 32.09MB

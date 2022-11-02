@@ -1,0 +1,260 @@
+Magma V2.25-5     Fri Oct  1 2021 10:21:15 on gaby     [Seed = 2628435496]
+Type ? for help.  Type <Ctrl>-D to quit.
+Determining the splitting behaviour of the auxiiary primes [5,11,13,17,29] in L 
+= Cyclotomic(7) and M = K(sqrt{-1})..
+..done.
+*******************************************
+* Using the curve E, we show that either  *
+* (1) 7 does not divide a+b and 4|ab, or  *
+* (2) 7 divides a+b and (2||ab or 4|a+b). *
+*******************************************
+Eliminating forms at level 2^2*7^2 = 196
+Form no 1 eliminated
+Form no 2  not eliminated !
+Form no 3 eliminated
+
+Only form no 2 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,0) :
+-2
+0
+-a - 1
+Done !
+++++++++++++++++++++++ Total running time (in hours) = 0.001
+Eliminating forms at level 2^3*7^2 = 392
+Form no 1  not eliminated !
+Form no 2 eliminated
+Form no 3 eliminated
+Form no 4 eliminated
+Form no 5 eliminated
+Form no 6 eliminated
+Form no 7 eliminated
+Form no 8 eliminated
+
+Only form no 1 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,-1) :
+0
+-2
+1
+-4
+-1
+2
+-a - 1
+-a - 1
+
+********************************************************
+* We have proved that we are in Case (1) or (2) above. *
+********************************************************
+
+++++++++++++++++++++++ Total running time (in hours) = 0.002
+
+**************************************************
+* Using the curve F, we rule out case (1) above. *
+**************************************************
+
+Computing forms at level I2^3*I3...
+Done !
+There are  47 newforms
+++++++++++++++++++++++ Total running time (in hours) = 0.004
+
+We first perform standard elimination at level I2^3*I3 using primes q = 5, 13, 
+29 and 41 and the Frey curve twisted by -7 :
+Form no 1 is eliminated
+Form no 2 is eliminated
+Form no 3 is eliminated
+Form no 4 is eliminated
+Form no 5 is eliminated
+Form no 6 is eliminated
+Form no 7 is eliminated
+Form no 8 is eliminated
+Form no 9 is eliminated
+Form no 10 is eliminated
+Form no 11 is eliminated
+Form no 12 is eliminated
+Form no 13 is eliminated
+Form no 14 is eliminated
+Form no 15 is eliminated
+Form no 16 is eliminated
+Form no 17 is eliminated
+Form no 18 is eliminated
+Form no 19 is eliminated
+Form no 20 is eliminated
+Form no 21 is eliminated
+Form no 22 is eliminated
+Form no 23 is eliminated
+Form no 24 is not eliminated for prime(s) : { 5 }
+Form no 25 is eliminated
+Form no 26 is eliminated
+Form no 27 is eliminated
+Form no 28 is eliminated
+Form no 29 is eliminated
+Form no 30 is eliminated
+Form no 31 is eliminated
+Form no 32 is eliminated
+Form no 33 is eliminated
+Form no 34 is eliminated
+Form no 35 is eliminated
+Form no 36 is eliminated
+Form no 37 is eliminated
+Form no 38 is eliminated
+Form no 39 is eliminated
+Form no 40 is eliminated
+Form no 41 is eliminated
+Form no 42 is eliminated
+Form no 43 is eliminated
+Form no 44 is eliminated
+Form no 45 is eliminated
+Form no 46 is eliminated
+Form no 47 is eliminated
+
+
+The prime p = 5 survives for the form no 24 ; we discard it using refined 
+elimination with q = 13 :
+
+++++++++++++++++++++++
+Performing refined elimination for the form no 24 with q = 13
+The refined elimination with q = 13 works. The form is eliminated for p = 5
+
+
+****************************
+* Case (1) is eliminated ! *
+****************************
+
+++++++++++++++++++++++ Total running time (in hours) = 0.008
+
+*******************************************************
+* Using the curve F, we rule out case (2) when 4|a+b. *
+*******************************************************
+
+Computing forms at level I2*I3*I7...
+Done !
+There are  5 newforms
+++++++++++++++++++++++ Total running time (in hours) = 0.008
+
+We first perform standard elimination at level I2*I3*I7 using primes q = 5, 13, 
+29 and 41 and the Frey curve not twisted :
+Form no 1 is eliminated
+Form no 2 is eliminated
+Form no 3 is not eliminated for prime(s) : { 5, 13 }
+Form no 4 is eliminated
+Form no 5 is eliminated
+
+++++++++++++++++++++++ Total running time (in hours) = 0.010
+
+
+The primes p = 5, 13 survive for the form no 3 ; we discard p = 5 using refined 
+elimination with q = 29 :
+
+++++++++++++++++++++++
+The refined elimination with q = 29 works. The form is eliminated for p = 5
+
+For each form f at level I2*I3*I7, we compute Norm(a_Q(f)-(Norm(Q)+1)) mod 13 
+for any of the three prime ideals Q above 29 in K :
+
+Form no 1 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 7
+Form no 2 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+Form no 3 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 0
+Form no 4 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 8
+Form no 5 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+
+Hence form no 3 is the *unique* form with reducible mod 13 representation whose 
+existence is predicted by Martin's result.
+It has exactly 1 prime ideal above 13 in its coefficient field.
+
+***************************************
+* Case (2) when 4|a+b is eliminated ! *
+***************************************
+
+++++++++++++++++++++++ Total running time (in hours) = 0.010
+
+************************************************************
+* Using the curve C, we rule out case (2) when ab is even. *
+************************************************************
+
+Since 7 divides a+b, we know that our Frey representation arises after twisting 
+by the mod 7 cyclotomic character (which is quadratic when restricted to K) from
+a form of level I2^2*I3*I7.
+Computing forms in level I2^2*I3*I7..
+..done.
+++++++++++++++++++++++ Total running time (in hours) = 0.010
+
+Eliminating forms by checking whether K is included in the field of 
+coefficients..
+done.
+
+Only the forms no [ 9, 10, 15, 17, 18, 19 ]
+have coefficient field containing K
+
+We finally eliminate each of these forms in turn:
+
+Eliminating form 9..
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 5 }
+We still have to eliminate exponents p = { 5, 17 }
+Performing standard elimination with 2 prime ideal(s) of residue 
+characteristic(s) { 13 }
+Eliminated form 9
+++++++++++++++++++++++ Total running time (in hours) = 0.011
+
+Eliminating form 10..
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 13 }
+We still have to eliminate exponents p = { 13, 29, 43, 281 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 11 }
+Form 10 not eliminated for exponents { 13 }
+We use refined elimination with auxiliary prime q = 29 to deal with p = 13
+++++++++++++++++++++++ Total running time (in hours) = 0.018
+form eliminated for p = 13
+++++++++++++++++++++++ Total running time (in hours) = 0.021
+
+
+
+Eliminating form number 15
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 5 }
+We still have to eliminate exponents p = { 5, 31, 79, 127, 7549, 47977, 141761 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 13 }
+Eliminated form i = 15
+++++++++++++++++++++++ Total running time (in hours) = 0.021
+
+Eliminating form number 17
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 5 }
+We still have to eliminate exponents p = { 5, 11, 8011, 9181, 48673, 56431 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 13 }
+Eliminated form i = 17
+++++++++++++++++++++++ Total running time (in hours) = 0.022
+
+Eliminating form number 18
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 5 }
+We still have to eliminate exponents p = { 5, 17, 67, 12163, 185767 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 13 }
+Eliminated form i = 18
+++++++++++++++++++++++ Total running time (in hours) = 0.022
+
+Eliminating form 19..
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 5 }
+We still have to eliminate exponents p = { 5, 11, 17, 59, 89, 137, 173, 193, 
+1815911 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 13 }
+We still have to eliminate exponents p = { 5 }
+Performing standard elimination with 1 prime ideal(s) of residue 
+characteristic(s) { 11 }
+Eliminated form 19.
+++++++++++++++++++++++ Total running time (in hours) = 0.022
+
+We have eliminated all the forms.
+
+
+********************************************************
+* The main theorem is proved using curves E, F and C ! *
+********************************************************
+
+
+Total time: 81.730 seconds, Total memory usage: 470.56MB

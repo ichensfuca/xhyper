@@ -1,0 +1,16 @@
+Magma V2.23-1     Wed Sep 29 2021 14:11:19 on Imins-iMac-2 [Seed = 270903040]
+Type ? for help.  Type <Ctrl>-D to quit.
+Computing forms at level I2 ...
+Done !
+There are  1 newforms
+The degrees of coefficient fields are [ 2 ]
+++++++++++++++++++++++ Total running time (in hours) = 0.001
+
+Computing forms at level I2*I11...
+Done !
+There are  2 newforms
+The degrees of coefficient fields are [ 5, 5 ]
+++++++++++++++++++++++ Total running time (in hours) = 0.002
+
+
+Total time: 7.139 seconds, Total memory usage: 184.72MB

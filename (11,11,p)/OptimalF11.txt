@@ -1,0 +1,305 @@
+
+// Freitas Frey elliptic curve F = F_(a,b) = E^(k1,k2)_(a,b) for r = 11, (k1,k2) = (2,1).
+
+
+// This function computes the running time (in hours).
+t0:=Realtime();
+function Realhours();
+   return Realtime(t0)/3600;
+end function;
+
+
+// K1 = 11th cyclotomic field
+// F = F(a,b) is constructed over K1 first
+K1<z>:=CyclotomicField(11);
+R1:=PolynomialRing(K1,2);
+fracR1<x,y>:=FieldOfFractions(R1);
+
+
+k1:=2;
+k2:=1;
+f1:=x^2+(z^k1+1/z^k1)*x*y+y^2;
+f2:=x^2+(z^k2+1/z^k2)*x*y+y^2;
+alpha:=z^k2+1/z^k2-z^k1-1/z^k1;
+beta:=2-z^k2-1/z^k2;
+gamma:=z^k1+1/z^k1-2;
+A:=alpha*(x+y)^2;
+B:=beta*f1;
+C:=gamma*f2;
+
+S1<X1>:=PolynomialRing(fracR1);
+E:=EllipticCurve(X1*(X1-A)*(X1+B));
+E:=WeierstrassModel(E);
+AI:=aInvariants(E);
+
+
+// K = maximal real subfield of 11th cyclotomic field
+// F = F(a,b) descends to K and recast it to be defined over K
+polsQ<X>:=PolynomialRing(Rationals());
+K<z>:=NumberField(X^5 + X^4 - 4*X^3 - 3*X^2 + 3*X + 1);
+OK:=Integers(K);
+I2:=Factorization(2*OK)[1,1];
+I11:=Factorization(11*OK)[1,1];
+
+R<x1,y1>:=PolynomialRing(K,2);
+_,gm:=IsSubfield(K,K1);
+
+AIn:=R1!AI[4];
+NM:=[Evaluate(c,[x1,y1]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI4:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+AIn:=R1!AI[5];
+NM:=[Evaluate(c,[x1,y1]) : c in Monomials(AIn)];
+NC:=[K!(gm^(-1))(c) : c in Coefficients(AIn)];
+NAI6:=R!(&+[NC[i]*NM[i] : i in [1..#NM]]);
+
+
+// Returns the Frey elliptic curve F(x,y) over K twisted by d.
+FreyF:=function(x,y,d)
+  E:=QuadraticTwist(EllipticCurve([Evaluate(NAI4,[x,y]),Evaluate(NAI6,[x,y])]),d);
+  return E;
+end function;
+
+
+
+// Given a form f, this function computes a possible bound for p using the norm of the difference between the a_Q coefficients for Q|q 
+function BoundOverK(q,f,curve,twist);
+F:=CoefficientField(f);
+factQ:=Factorisation(q*OK);
+B:=1;
+for x,y in [0..q-1] do
+	if [x,y] ne [0,0] then
+		Bxy:=0;
+		C:=curve(x,y,twist);
+		for i in [1..#factQ] do
+			Q:=factQ[i,1];
+			if LocalInformation(C,Q)[3] eq 0 then
+				diffQ:=Norm(TraceOfFrobenius(C,Q)-HeckeEigenvalue(f,Q));
+			else
+				diffQ:=Norm((Norm(Q)+1)^2-HeckeEigenvalue(f,Q)^2);
+      		end if;
+			Bxy:=Gcd(Integers()!Bxy,Integers()!diffQ);
+    	end for;
+		if Bxy eq 0 then
+			return []; // Here p is unbounded
+		else
+			B:=B*Bxy;
+		end if;
+	end if;
+end for;
+return [q*B];
+end function;
+
+
+
+// Given a form f, this function computes a possible bound for P using the difference between the a_Q coefficients for Q|q 
+function refined_BoundOverK(q,f,curve,twist);
+F:=CoefficientField(f);
+if F eq Rationals() then
+	OF:=1;
+else
+	OF:=Integers(F);
+end if;
+factQ:=Factorisation(q*OK);
+B:=1*OF;
+for x,y in [0..q-1] do
+	if [x,y] ne [0,0] then
+		Bxy:=0*OF;
+		C:=curve(x,y,twist);
+		for i in [1..#factQ] do
+			Q:=factQ[i,1];
+			if LocalInformation(C,Q)[3] eq 0 then
+				diffQ:=TraceOfFrobenius(C,Q)-HeckeEigenvalue(f,Q);
+			else
+				diffQ:=(Norm(Q)+1)^2-HeckeEigenvalue(f,Q)^2;
+      			end if;
+			if F eq Rationals() then
+				Bxy:=Gcd(Integers()!Bxy,Integers()!diffQ);			
+			else
+				Bxy:=Gcd(Bxy,diffQ*OF);
+			end if;
+    		end for;
+		if Bxy eq 0*OF then
+			return []; // Here p is unbounded
+		else
+			B:=B*Bxy;
+		end if;
+	end if;
+end for;
+return [q*B];
+end function;
+
+
+
+// For the forms in "forms", this function returns the possible ideals P|p with p\ge5 using the "good" primes q in AuxiliaryPrimes using and standard elimination
+function Bound(forms,curve,twist,AuxiliaryPrimes);
+	print "Performing standard elimination for",#forms,"form(s) with set of auxiliary primes",AuxiliaryPrimes;
+	for i in [1..#forms] do
+		f:=forms[i];
+		print "";
+		print "Checking form no",i;
+		print "";
+		Sf:={};
+		bool:=0;
+  		for q in AuxiliaryPrimes do
+			if bool eq 0 or Sf ne {} then
+				print "Dealing with q =",q;
+				if BoundOverK(q,f,curve,twist) ne [] then // Here f can be discarded for large enough p
+					Sq:=Set([I[1] : I in Factorisation(BoundOverK(q,f,curve,twist)[1])]);
+					if bool eq 0 then
+						print "This form can be eliminated for large enough p !";
+						Sf:=Sq;
+						bool:=1;
+					end if;
+					Sf:=Sf meet Sq;
+					Sf:={p : p in Sf | p gt 3 and p ne 11};
+			    	end if;
+			end if;
+		end for;
+		if bool eq 0 then
+		    	print "Form no",i," not eliminated for large enough p";
+	  	else
+			if Sf eq {} then
+				print "Form no",i,"is eliminated";
+			else
+				print "Form no",i;
+				print "with coefficient field :", CoefficientField(f) ;
+				print "is not eliminated for prime(s) :",Sf;
+			end if;
+		end if;
+		print "*************************************************************";
+	end for;
+return "";
+end function;
+
+
+// For the form f, this function returns the possible ideals P|p with p\ge5 using the "good" primes q in AuxiliaryPrimes and refined elimination
+function refined_Bound(f,curve,twist,AuxiliaryPrimes);
+	print "Performing refined elimination with set of auxiliary primes",AuxiliaryPrimes;
+	print "";
+	Sf:={};
+	bool:=0;
+  	for q in AuxiliaryPrimes do
+		if bool eq 0 or Sf ne {} then
+			print "Dealing with q =",q;
+			if refined_BoundOverK(q,f,curve,twist) ne [] then // Here f can be discarded for large enough p
+				Sq:=Set([I[1] : I in Factorisation(refined_BoundOverK(q,f,curve,twist)[1])]);
+				if bool eq 0 then
+					print "This form can be eliminated for large enough p !";
+					Sf:=Sq;
+					bool:=1;
+				end if;
+				Sf:=Sf meet Sq;
+				Sf:={P : P in Sf | Characteristic(ResidueClassField(P)) gt 3};
+		    	end if;
+		end if;
+	end for;
+	if bool eq 0 then
+	    	print "The form is not eliminated for large enough p";
+	else
+		if Sf eq {} then
+			print "The form is eliminated";
+		else
+			print "The form with coefficient field :", CoefficientField(f) ;
+			print "is not eliminated for",#Sf,"prime ideal(s) above :", Set([Norm(P) : P in Sf]);
+		end if;
+	end if;
+	print "*************************************************************";
+	return "";
+end function;
+
+
+
+  
+
+//this function performs refined elimination mod p for a given form f and a subset of primes in Kf above p
+ 
+function refined_elimination_subset(f,curve,twist,q,Kf,OKf, factP);
+	t1:=Realtime();
+	factQ:=Factorisation(q*OK);
+	ResFields:=[<PP,toPP> where PP,toPP := ResidueClassField(I) : I in factP];
+	for x in [0..q-1] do
+		for y in [x..q-1] do
+			if [x,y] ne [0,0] then
+				C:=curve(x,y,twist);
+				for res in ResFields do
+					bool:=0;
+					for i in [1..#factQ] do
+						if bool eq 0 then
+						Q:=factQ[i,1];
+						afQ:=HeckeEigenvalue(f,Q);
+						if LocalInformation(C,Q)[3] eq 0 then 
+							if res[2](OKf!afQ - TraceOfFrobenius(C,Q)) ne res[2](0) then
+								bool:=1;
+							end if;
+						end if;
+						if LocalInformation(C,Q)[3] ne 0 then 
+							if res[2](OKf!afQ^2 - (Norm(Q) + 1)^2) ne res[2](0) then
+								bool:=1;
+							end if;
+		      				end if;
+		      				end if;
+		    			end for;
+		    			if bool eq 0 then
+						return "The form is NOT eliminated !";
+		    			end if;
+    				end for;
+			end if;
+		end for;
+	end for;
+	print "The refined elimination with q =",q,"works. The form is eliminated for the given subset of primes above p =",Characteristic(ResidueClassField(factP[1]));
+	print "Running time for this form (in seconds) =", Realtime()-t1;
+	return "";
+end function;
+
+
+
+N:=I2;
+print "Computing forms at level I2 ...";
+forms:=Eigenforms(NewSubspace(HilbertCuspForms(K,N)));
+print "Done !";
+print "There are ", #forms, "newforms";
+print "The degrees of coefficient fields are", [Degree(CoefficientField(f)): f in forms];
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+Bound(forms,FreyF,1,[3,23]);
+
+
+// refined elimination to eliminate one prime above 31 of the unique Hecke constituent in the above space
+// for the other prime above 31 this fails, so we need the additional argument below using Kimball results
+Kf<w>:=CoefficientField(forms[1]);
+OKf:=Integers(Kf);
+assert MinimalPolynomial(w) eq (X^2 + X - 1);
+I31a:=ideal<OKf | -5*w-3>; 
+I31b:=ideal<OKf | -5*w-2>;
+factors31:=[I[1] : I in Factorisation(31*OKf)];
+assert [I31a,I31b] eq factors31;
+refined_elimination_subset(forms[1],FreyF,1,23,Kf,OKf,[I31a]);
+
+// to apply Kimball Martin Theorem 2.1 we use formula (1.6) in his paper to compute m(O)
+// this formula involves evaluation the Zeta function of Kf at -1.
+LF := LSeries(Kf : Precision := 10);
+Evaluate(LF, -1);
+s := Evaluate(LF, -1);
+MinimalPolynomial(s, 1); 
+print "This shows that Zeta_Kf(-1) = 1/30";
+print "Eliminated all forms at level I2";
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+
+N:=I2*I11;
+print "Computing forms at level I2*I11...";
+forms:=Eigenforms(NewSubspace(HilbertCuspForms(K,N)));
+print "Done !";
+print "There are ", #forms, "newforms";
+print "The degrees of coefficient fields are", [Degree(CoefficientField(f)): f in forms];
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+
+Bound(forms,FreyF,1,[3,23]);
+print "Eliminated all forms at level I2*I11";
+print "++++++++++++++++++++++ Total running time (in hours) =", Realhours();
+print "";
+
+

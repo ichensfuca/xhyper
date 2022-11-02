@@ -1,0 +1,359 @@
+
+
+// Program to prove optimal exponent bounds for x^11 + y^11 = z^p, 2 \mid a + b or 11 \mid a + b
+
+
+// K is the maximal real subfield of the 11th cyclotomic field.
+R1<X>:=PolynomialRing(Rationals());
+m1:=X^5 + X^4 - 4*X^3 - 3*X^2 + 3*X + 1;
+K<z>:=NumberField(m1);
+G:=Automorphisms(K);
+
+
+R<x>:=PolynomialRing(K);
+OK:=Integers(K);
+I11:=Factorization(11*OK)[1][1];
+I2:=Factorization(2*OK)[1][1];
+
+
+
+
+// This function computes the running time (in hours).
+t0:=Realtime();
+function Realhours();
+   return Realtime(t0)/3600;
+end function;
+
+
+
+// Find the automorphism of K which maps Q1 to Q2.
+function find_g(Q1,Q2);
+  for g in G do
+    if Q2 eq g(Q1) then
+      return g;
+    end if;
+  end for;
+end function;
+
+
+
+
+// This function is necessary to deal with some incompatibility of universes arising in the output of some Magma functions.
+// Return the set of prime divisors of x, with special treatment when x is zero or a unit.
+S:=Parent({1,2,3});
+function primeset(x)
+  x:=Integers()!x;
+
+  if x eq 0 then
+    return S!{0};
+  elif x in {-1,1} then
+    return S!{x};
+  else 
+    return S!Set(PrimeDivisors(x));
+  end if;
+end function;
+
+
+
+
+// Returns the set of prime divisors of x that belong to A, with special treatment when x is zero or a unit.
+function primesetwithsupport(x,A);
+  x:=Integers()!x;
+
+  if x eq 0 then
+    return S!{0};
+  elif x in {-1,1} then
+    return S!{x};
+  else
+    B:={}; 
+    for q in A do
+      if x mod q eq 0 then
+        B:=B join {q};
+      end if;
+    end for;
+    return S!B;
+  end if;
+end function;
+
+
+
+
+
+
+
+// Returns the base change to K of the hyperelliptic Frey curve C constructed by Kraus attached to solution (a,b,c).
+function FreyC(a,b);
+  R<x>:=PolynomialRing(K);
+  return HyperellipticCurve(x^11 + 11*a*b*x^9 + 44*a^2*b^2*x^7 + 77*a^3*b^3*x^5 + 55*a^4*b^4*x^3 + 11*a^5*b^5*x + b^11 - a^11);
+end function;
+
+
+
+
+// The Jacobian J=J(C) is of GL2-type over K. We want to extract the traces of Frobenius of the 2-dim representations of G_K attached to J/K . 
+// For a prime Q of K of good reduction the degree 6 Euler factor at Q factors into 3 degree 2 polynomials, where the middle coefficients 
+// are minus the traces.
+
+function tracefrobenius(C,Q);
+  Lf:=EulerFactor(C,Q);
+  Lf:=Reverse(Lf);
+  Lfactor:=Factorization(R!Lf);
+  
+  return [-Coefficient(f[1],1) : f in Lfactor]; 
+end function;
+
+
+
+
+
+
+
+
+// Recall the field of real multiplications of J/K is equal to K which is of degree 5 over Q. 
+// The following returns a list of possible vectors of traces at primes in K above q (assuming good reduction).
+function tracefrobeniusL(C,factQ);
+  tLQ:=tracefrobenius(C,factQ[1,1]);
+  
+   if #tLQ eq 1 then
+    if #factQ eq 1 then
+      tL:=[[tLQ[1]]];
+    elif #factQ eq 5 then
+      tL:=[[tLQ[1],tLQ[1],tLQ[1],tLQ[1],tLQ[1]]];
+    end if;
+  elif #tLQ eq 5 then
+    if #factQ eq 1 then
+      tL:=[[tLQ[1]],[tLQ[2]],[tLQ[3]],[tLQ[4]],[tLQ[5]]];
+    elif #factQ eq 5 then
+
+      // we make use of the Q-form property to restrict possibilities for traces
+      sig:=find_g(factQ[1,1],factQ[2,1]);
+      
+      tL:=[
+	[tLQ[1],sig(tLQ[1]),sig(sig(tLQ[1])),sig(sig(sig(tLQ[1]))),sig(sig(sig(sig(tLQ[1]))))],
+	[tLQ[2],sig(tLQ[2]),sig(sig(tLQ[2])),sig(sig(sig(tLQ[2]))),sig(sig(sig(sig(tLQ[2]))))],
+	[tLQ[3],sig(tLQ[3]),sig(sig(tLQ[3])),sig(sig(sig(tLQ[3]))),sig(sig(sig(sig(tLQ[3]))))],
+	[tLQ[4],sig(tLQ[4]),sig(sig(tLQ[4])),sig(sig(sig(tLQ[4]))),sig(sig(sig(sig(tLQ[4]))))],
+	[tLQ[5],sig(tLQ[5]),sig(sig(tLQ[5])),sig(sig(sig(tLQ[5]))),sig(sig(sig(sig(tLQ[5]))))]   
+];
+    end if;
+  end if;
+
+  return tL;
+end function;
+
+
+
+
+
+
+
+
+// The next function applies a finer elimination technique that uses also the specific value of p.
+// It will be used in the very end to clean up the few remaining exponents (for a given form f).
+// If no assertion fails then the form has been eliminated
+procedure RefinedBound(q,f,curve,p)
+  factQ:=Factorisation(q*OK);
+
+  Kf:=BaseField(f);
+  LK:=Compositum(K,Kf);
+
+  print "Degree of coefficient field is", Degree(Kf);
+  print "Degree of compositum of K and coefficient field is", Degree(LK);
+
+  OLK:=Integers(LK);
+  factP:=[I[1] : I in Factorization(p*OLK)];
+
+  ResFields:=[<QQ,toQQ> where QQ,toQQ := ResidueClassField(I) : I in factP];
+
+  afQ:=[OLK!HeckeEigenvalue(f,q[1]) : q in factQ];
+
+  list2:=[*[res[2]((Norm(factQ[i][1])+1)^2 - afQ[i]^2) : i in [1..#factQ]] : res in ResFields*];
+  zeroes:=[*[res[2](0) : i in [1..#factQ]] : res in ResFields*];
+  assert {list2[i] eq zeroes[i] : i in [1..#ResFields]} eq {false};
+
+  for x,y in [0..q-1] do
+    if [x,y] ne [0,0] and (x+y) mod q ne 0 then
+      C:=curve(x,y);
+
+      tQL:=tracefrobeniusL(C,factQ);
+
+      for t in tQL do
+        list:=[*[res[2](afQ[i] - t[i])  : i in [1..#factQ]]: res in ResFields*];
+        zeroes:=[*[res[2](0) : j in [1..#factQ]] : res in ResFields*];
+        assert {list[i] eq zeroes[i] : i in [1..#ResFields]} eq {false};
+      end for;
+    end if;
+  end for;
+end procedure;
+
+
+
+
+
+
+// Using an auxiliary prime q this function computes a constant B such that the form f is eliminated when the exponent p does not divide B.
+function Bound2(q,f,LK,curve)
+  B:={};
+  factQ:=Factorisation(q*OK);
+
+  print "Computing Hecke eigenvalue ...";
+  hL:=[HeckeEigenvalue(f,factQ[i,1]) : i in [1..#factQ]];
+  print "...done.";
+
+  for x,y in [0..q-1] do
+    if [x,y] ne [0,0] then
+      C:=curve(x,y);
+
+      if (x+y) mod q ne 0 then
+        tL:=tracefrobeniusL(C,factQ);
+
+        L:=1;
+        for u in tL do
+          L:=L*Gcd([Integers()!Norm(LK!u[i] - LK!hL[i]) : i in [1..#factQ]]);
+        end for;
+      else
+	L:=Gcd([Integers()!Norm(LK!(Norm(factQ[i,1])+1)^2 - LK!hL[i]^2) : i in [1..#factQ]]);
+      end if;
+
+      B:=B join primeset(L);
+    end if;
+  end for;
+
+  return B join {q};
+end function;
+
+
+
+
+
+
+// Test if there is a bound B that eliminates the form f when the exponent p does not divide B.
+// It stops after finding one auxiliary prime q that produces a bound. 
+// It returns q and the set of exponents that are not covered. 
+function BoundFormTest2(f,LK,curve,AuxPrimes); 
+  for j in [1..#AuxPrimes] do
+  q:=AuxPrimes[j];
+
+  T:=Bound2(q,f,LK,curve);
+    if 0 notin T then
+      print "First bound obtained with auxiliary prime q =", q;
+      return <j,T>;
+    end if;
+  end for;
+  assert false;  
+  return S!{0};
+end function;
+
+
+
+
+
+// Test if there is a bound B that eliminates the form f when the exponent p does not divide B
+// It uses several auxiliary primes to sharpen the bound with each prime. 
+// It stops after testing all the auxiliary primes or if the bound is already a subset of {2,3,11}.
+function BoundForm2(f,LK,curve,AuxPrimes);
+  A:=BoundFormTest2(f,LK,curve,AuxPrimes); 
+  ini:=A[1];  
+  LT:=A[2];
+  assert ini le #AuxPrimes;
+  // this assertion should always be true due to the choice of auxiliary primes
+  
+  if (ini+1) le #AuxPrimes then
+  for i in [(ini+1)..#AuxPrimes] do 
+    
+    if LT subset {2,3,11} then
+      break;
+    end if;    
+
+    q:=AuxPrimes[i];
+    print "Trying auxiliary prime q =", q;   
+    
+    T:=Bound2(q,f,LK,curve);    
+    if 0 notin T then
+      LT:=LT meet T;
+      print LT;
+    end if;
+     
+   end for;
+  end if;	
+
+  return LT;
+end function;
+
+
+Realhours();
+
+
+// Level needed to use C for d = 1 in replacement of case (Bii).
+N:=I2^2*I11;
+S:=NewSubspace(HilbertCuspForms(K,N));
+assert Dimension(S) eq 376;
+
+forms:=Eigenforms(S);
+
+#forms;
+
+[Degree(CoefficientField(f)) : f in forms];
+ 
+Realhours();
+
+
+// We test which forms have coefficient field containing K.
+print "Eliminating forms by checking whether K is included in the field of coefficients..";
+degForms:=[];
+index:=[];
+for i in [1..#forms] do
+	f:=forms[i];
+	F:=BaseField(f);
+	degF:=Degree(F);
+	bolF:=false;
+	if degF mod 5 eq 0 then 
+		subsDeg5:=Subfields(F,5);
+		for fld in subsDeg5 do
+			if IsIsomorphic(K,fld[1]) then bolF:=true; end if;
+		end for;
+	end if;
+	if bolF then 
+		Append(~index,i); 
+		Append(~degForms,degF);
+	end if;
+end for;
+
+print "The remaining forms are:", index;
+print "Their coefficient fields have degree:", degForms;
+
+
+Realhours();
+
+
+
+AuxiliaryPrimes:=[3,5,7,23];
+
+BadForms:={};
+print "Starting elimination with set of auxiliary primes ",AuxiliaryPrimes; 
+print "++++++++++++++++++++++", Realhours();
+print "";
+
+
+for j:=1 to #index do
+	i:=index[j];
+	print "++++++++++++++++++++++", Realhours();
+	print "";
+	print "Working with form number",i;
+	f:=forms[i];
+	Kf:=BaseField(f);
+	LK:=Compositum(K,Kf);
+  
+	Bf:=BoundForm2(f,LK,FreyC,AuxiliaryPrimes);
+	print Bf;
+
+	if not (Bf subset {2,3,11}) then
+		print "**** This form is not eliminated for the primes", {p : p in Bf | p gt 3 and p ne 11};
+		BadForms:=BadForms join {i};
+	end if;
+end for;
+
+BadForms;
+
+
+Realhours();

@@ -1,0 +1,279 @@
+Magma V2.25-5     Fri Oct  1 2021 09:04:52 on gaby     [Seed = 1583877847]
+Type ? for help.  Type <Ctrl>-D to quit.
+Determining the splitting behaviour of the auxiiary primes [5,11,13,17,29] in L 
+= Cyclotomic(7) and M = K(sqrt{-1})..
+..done.
+*******************************************
+* Using the curve E, we show that either  *
+* (1) 7 does not divide a+b and 4|ab, or  *
+* (2) 7 divides a+b and (2||ab or 4|a+b). *
+*******************************************
+Eliminating forms at level 2^2*7^2 = 196
+Form no 1 eliminated
+Form no 2  not eliminated !
+Form no 3 eliminated
+
+Only form no 2 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,0) :
+-2
+0
+-a - 1
+Done !
+++++++++++++++++++++++ Total running time (in hours) = 0.001
+Eliminating forms at level 2^3*7^2 = 392
+Form no 1  not eliminated !
+Form no 2 eliminated
+Form no 3 eliminated
+Form no 4 eliminated
+Form no 5 eliminated
+Form no 6 eliminated
+Form no 7 eliminated
+Form no 8 eliminated
+
+Only form no 1 is not eliminated. Computing the difference of the a_3 
+coefficients, we check that it corresponds to the Frey curve E(1,-1) :
+0
+-2
+1
+-4
+-1
+2
+-a - 1
+-a - 1
+
+********************************************************
+* We have proved that we are in Case (1) or (2) above. *
+********************************************************
+
+++++++++++++++++++++++ Total running time (in hours) = 0.002
+
+*******************************************************
+* Using the curve F, we rule out case (2) when 4|a+b. *
+*******************************************************
+
+Computing forms at level I2*I3*I7...
+Done !
+There are  5 newforms
+++++++++++++++++++++++ Total running time (in hours) = 0.003
+
+We first perform standard elimination at level I2*I3*I7 using primes q = 5, 13, 
+29 and 41 and the Frey curve not twisted :
+Form no 1 is eliminated
+Form no 2 is eliminated
+Form no 3 is not eliminated for prime(s) : { 5, 13 }
+Form no 4 is eliminated
+Form no 5 is eliminated
+
+++++++++++++++++++++++ Total running time (in hours) = 0.004
+
+
+The primes p = 5, 13 survive for the form no 3 ; we discard p = 5 using refined 
+elimination with q = 29 :
+
+++++++++++++++++++++++
+The refined elimination with q = 29 works. The form is eliminated for p = 5
+
+For each form f at level I2*I3*I7, we compute Norm(a_Q(f)-(Norm(Q)+1)) mod 13 
+for any of the three prime ideals Q above 29 in K :
+
+Form no 1 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 7
+Form no 2 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+Form no 3 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 0
+Form no 4 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 8
+Form no 5 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+
+Hence form no 3 is the *unique* form with reducible mod 13 representation whose 
+existence is predicted by Martin's result.
+It has exactly 1 prime ideal above 13 in its coefficient field.
+
+***************************************
+* Case (2) when 4|a+b is eliminated ! *
+***************************************
+
+++++++++++++++++++++++ Total running time (in hours) = 0.004
+
+*******************************************************************
+* Using the curve C, we rule out the case ab even                 *
+* and hence case (1) and the remaining (sub-)case (2) when 2||ab. *
+*******************************************************************
+
+Computing forms at level I2^2*I3*I7^2...
+Done !
+There are 61 newforms at level I2^2*I3*I7^2.
+++++++++++++++++++++++ Total running time (in hours) = 0.196
+
+Eliminating forms by checking whether K is included in the field of 
+coefficients..
+..done.
+
+We first determine which of these forms are quadratic twists by the mod 7 
+cyclotomic character (which is quadratic when restricted to K) of forms in the 
+two possible smaller levels.
+
+Computing forms at level I2^2*I3..
+..done. 0.199
+Computing forms in level I2^2*I3*I7..
+..done. 0.200
+
+Degrees of the coefficient fields of the forms at level I2^2*I3:
+[ 1, 3, 3, 9 ]
+
+Degrees of the coefficient fields of the forms at level I2^2*I3*I7:
+[ 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 9, 9, 9, 9, 12, 12, 12, 15 ]
+
+Degrees of the coefficient fields of the forms no 12, 16, 17, 18, 19, 20, 21, 
+22, 23, 24, 26, 28, 33, 38, 41, 42, 45, 46, 47, 48, 51, 57, 58, 60, 61 (i.e. 
+whose coefficient field contains K) at level I2^2*I3*I7^2:
+[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 12, 12, 15, 18, 18, 21, 21, 36, 36, 
+54, 54 ]
+
+The forms at level I2^2*I3*I7^2 with coefficient field (containing K) of degree 
+> 15 do not arise from lower level.
+
+We look for the forms in level I2^2*I3*I7^2 whose coefficient field contains K 
+and has degree <= 15 and such that they arise by quadratic twist from level 
+I2^2*I3 or I2^2*I3*I7.
+
+Checking for forms that arises from twisting forms at level I2^2*I3 by comparing
+the coefficient fields..
+Form no 38 with field of degree 9 seems to be arising by quadratic twist from 
+form no 4 in level I2^2*I3
+Checked all forms.
+Since there are no repetitions of the first form number we conclude that the 
+Galois conjugacy classes of the previous pairs of forms are related by quadratic
+twist.
+
+Checking for forms f in level I2^2*I3*I7^2 that arise by twisting forms at level
+I2^2*I3*I7 by comparing the coefficient fields for forms f such that [Kf:Q]>3 
+and by comparing the Fourier coefficient at I11 for forms f such that [Kf:Q] = 3
+(i.e. Kf is isomorphic to K)..
+Form no 26 with field of degree 3 seems to be arising by quadratic twist from 
+form no 9 in level I2^2*I3*I7
+Form no 16 with field of degree 3 seems to be arising by quadratic twist from 
+form no 10 in level I2^2*I3*I7
+Form no 33 with field of degree 9  seems to be arising by quadratic twist from 
+form no  15  in level I2^2*I3*I7
+Form no 42 with field of degree 12  seems to be arising by quadratic twist from 
+form no  17  in level I2^2*I3*I7
+Form no 41 with field of degree 12  seems to be arising by quadratic twist from 
+form no  18  in level I2^2*I3*I7
+Form no 45 with field of degree 15  seems to be arising by quadratic twist from 
+form no  19  in level I2^2*I3*I7
+Checked all forms.
+Since there are no repetitions of the first form number we conclude that the 
+Galois conjugacy classes of the previous pairs of forms are related by quadratic
+twist.
+
+We conclude that at the level I2^2*I3*I7^2 all the forms of degree 9, 12, 15 and
+two of degree 3 arise from smaller levels by quadratic twist.
+
+It remains to determine wich forms in level I2^2*I3*I7^2 are quadratic twists of
+each other by the same character:
+
+Forms no 46 and 47 are twists of each other as they are the only forms with 
+coefficient field of degree 18
+Forms no 60 and 61 are twists of each other as they are the only forms with 
+coefficient field of degree 54
+Forms no 48 and 51 are twists of each other as they are the only forms with 
+coefficient field of degree 21 containing K.
+Forms no 57 and 58 are twists of each other as they are the only forms with 
+coefficient field of degree 36 containing K.
+Next we show that the remaining 10 forms of level I2^2*I3*I7^2 with Deg(Kf) = 3 
+appear in 5 pairs of quadratic twists..
+Form no  12  seems to be a quadratic twist of form no  28
+Form no  17  seems to be a quadratic twist of form no  24
+Form no  18  seems to be a quadratic twist of form no  19
+Form no  20  seems to be a quadratic twist of form no  21
+Form no  22  seems to be a quadratic twist of form no  23
+Checked all forms.
+Since there are no repetitions of the first form number we conclude that the 
+Galois conjugacy classes of the previous pairs of forms are related by quadratic
+twist.
+
+We first eliminate the forms that arise from a smaller level by the quadratic 
+twist corresponding to L/K where L = Cyclotomic(7)
+
+Form no 38 is eliminated because it is a quadratic twist of a form at level 
+I2^2*I3, while the conductor of the Frey variety at I7 has exponent 1 or 2 up to
+qudratic twist.
+
+Eliminating form 16..
+Form 16 not eliminated for exponents  { 13 }
+We use refined elimination with auxiliary prime q=29 to deal with p =  13
+++++++++++++++++++++++ Total running time (in hours) = 0.211
+form eliminated for p = 13
+++++++++++++++++++++++ Total running time (in hours) = 0.214
+
+Eliminating form 26..
+Eliminated form 26
+++++++++++++++++++++++ Total running time (in hours) = 0.214
+
+Eliminating form number  33
+Eliminated form i =  33
+++++++++++++++++++++++ Total running time (in hours) = 0.214
+
+Eliminating form number  41
+Eliminated form i =  41
+++++++++++++++++++++++ Total running time (in hours) = 0.215
+
+Eliminating form number  42
+Eliminated form i =  42
+++++++++++++++++++++++ Total running time (in hours) = 0.215
+Eliminating form 45..
+Eliminated form 45.
+++++++++++++++++++++++ Total running time (in hours) = 0.215
+
+We have eliminated all forms that arise by qudratic twist from smaller levels
+
+We next deal with the remaining forms, which are distributed into 5 pairs of 
+forms that are quadratic twists by L/K
+
+Eliminating forms 12 and 28.
+Eliminated forms 12 and 28
+++++++++++++++++++++++ Total running time (in hours) = 0.244
+
+Eliminating forms 17 and 24..
+Eliminated forms 17 and 24
+++++++++++++++++++++++ Total running time (in hours) = 0.244
+
+Eliminating forms 18 and 19..
+Eliminated forms 18 and 19
+++++++++++++++++++++++ Total running time (in hours) = 0.245
+
+We now eliminate forms 20 and 21.
+Eliminated forms 20 and 21.
+++++++++++++++++++++++ Total running time (in hours) = 0.246
+
+Eliminating forms 22 and 23.
+Forms 22 and 23 not eliminated for exponents  { 13 }
+++++++++++++++++++++++ Total running time (in hours) = 0.247
+We use refined elimination with auxiliary prime q=29 to deal with p=13
+form eliminated for p = 13
+++++++++++++++++++++++ Total running time (in hours) = 0.251
+
+Eliminating forms 46 and 47..
+Eliminated forms 46 and 47
+++++++++++++++++++++++ Total running time (in hours) = 0.252
+Eliminating forms 48 and 51..
+Eliminated forms 48 and 51
+++++++++++++++++++++++ Total running time (in hours) = 0.253
+
+Eliminating forms 57 and 58..
+++++++++++++++++++++++ Total running time (in hours) = 0.253
+Eliminated forms 57 and 58.
+++++++++++++++++++++++ Total running time (in hours) = 0.267
+
+Eliminating forms 60 and 61..
+First we obtain a better representation of their field of coefficients..
+..done 0.269
+We proceed to eliminate forms 60 and 61.
+Eliminated forms 60 and 61.
+++++++++++++++++++++++ Total running time (in hours) = 0.282
+All forms were eliminated.
+
+********************************************************
+* The main theorem is proved using curves E, F and C ! *
+********************************************************
+
+
+Total time: 1017.350 seconds, Total memory usage: 2142.84MB

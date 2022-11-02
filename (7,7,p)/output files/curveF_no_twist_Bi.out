@@ -1,0 +1,112 @@
+Magma V2.26-12    Thu Sep 22 2022 20:41:23 on cecm-gaby [Seed = 291455053]
+Type ? for help.  Type <Ctrl>-D to quit.
+
+******************************************************************
+PART B : eliminating in the case 7 dividing a+b
+
+
+Eliminating the case ab odd
+
+Computing forms at level N3 = I2*I3*I7...
+Done !
+There are  5 newforms
+++++++++++++++++++++++ 0.000
+We first perform standard elimination at level N3 = I2*I3*I7 using primes q = 
+13, 29 and 41 and the Frey curve not twisted :
+Performing standard elimination for 5 form(s) with set of auxiliary primes [ 5, 
+13, 29, 41 ]
+
+Checking form no 1
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+Dealing with q = 13
+Dealing with q = 29
+Form no 1 is eliminated
+*************************************************************
+
+Checking form no 2
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+Dealing with q = 13
+Form no 2 is eliminated
+*************************************************************
+
+Checking form no 3
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+Dealing with q = 13
+Dealing with q = 29
+Dealing with q = 41
+Form no 3
+with coefficient field : Number Field with defining polynomial x^3 - 3*x^2 - 
+    10*x - 1 over the Rational Field
+is not eliminated for prime(s) : { 5, 13 }
+*************************************************************
+
+Checking form no 4
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+Dealing with q = 13
+Dealing with q = 29
+Dealing with q = 41
+Form no 4 is eliminated
+*************************************************************
+
+Checking form no 5
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+Dealing with q = 13
+Form no 5 is eliminated
+*************************************************************
+
+++++++++++++++++++++++ 0.003
+
+The prime p = 11 survives for the form no 4 ; we discard it using refined 
+elimination with q = 5 :
+Performing refined elimination with set of auxiliary primes [ 5 ]
+
+Dealing with q = 5
+This form can be eliminated for large enough p !
+The form with coefficient field : Number Field with defining polynomial x^3 - 
+    x^2 - 30*x - 27 over the Rational Field
+is not eliminated for 6 prime ideal(s) above : { 13, 67, 125, 205379 }
+*************************************************************
+
+++++++++++++++++++++++ 0.003
+
+
+The primes p = 5, 13 survives for the form no 3 ; we discard p = 5 using refined
+elimination with q = 29 :
+Performing refined elimination with set of auxiliary primes [ 29 ]
+
+Dealing with q = 29
+This form can be eliminated for large enough p !
+The form with coefficient field : Number Field with defining polynomial x^3 - 
+    3*x^2 - 10*x - 1 over the Rational Field
+is not eliminated for 2 prime ideal(s) above : { 13, 24389 }
+*************************************************************
+
+++++++++++++++++++++++ 0.003
+
+
+For each form f at level N3 = I2*I3*I7, we compute Norm(a_Q(f)-(Norm(Q)+1)) mod 
+13 for any of the three prime ideals Q above 29 in K :
+
+Form no 1 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 7
+Form no 2 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+Form no 3 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 0
+Form no 4 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 8
+Form no 5 : Norm(a_Q(f)-(Norm(Q)+1)) mod 13 = 12
+
+Hence form no 3 is the *unique* form with reducible mod 13 representation whose 
+existence is predicted by Martin's result.
+It has exactly 1 prime ideal above 13 in its coefficient field.
+++++++++++++++++++++++ 0.003
+
+
+Total time: 10.540 seconds, Total memory usage: 184.72MB

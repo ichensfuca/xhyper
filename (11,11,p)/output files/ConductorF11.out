@@ -1,0 +1,63 @@
+Magma V2.26-12    Sat Sep 24 2022 12:51:07 on cecm-gaby [Seed = 594478448]
+Type ? for help.  Type <Ctrl>-D to quit.
+The resultant of A and B with respect to x (resp. y) is a constant times y 
+(resp. x).
+The constant in both cases is only divisible by primes above 11.
+We conclude over primes away from 2 and 11, F has semi-stable reduction.
+**********************
+Case 4 divides a for F
+**********************
+We expand c_4, c_6, Delta into powers of a in order of increasing degree.
+The valuations of the coefficients are:
+[ 8, 8, 8, 8, 8 ]
+[ 11, 11, 11, 12, 11, 11, 11 ]
+[ 16, 17, 16, 17, 16, 17, 17, 17, 16, 17, 16, 17, 16 ]
+Thus we have that (v(c_4), v(c_6), v(Delta)) = (8, 11, 16).
+We twist by 1/4 to get a model with (v(c_4), v(c_6), v(Delta)) = (4, 5, 4).
+To use Papadopoulos Table IV for showing the reduction type is III and conductor
+exponent f = 3, we would still need to check supplementary conditions.
+Instead, we note since the discriminant has valuation 4, the model is minimal 
+and only one round of Tate's algorithm is needed.
+Hence sampling modulo 2^6 is sufficient to establish the conductor exponent f = 
+3.
+Proving conductor exponent f = 3 by sampling modulo 2^6 ... done.
+
+**************************
+Case 8 divides a + b for F
+**************************
+We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.
+The valuations of the coefficients are:
+[ 8, 9, 8, 8, 8 ]
+[ 12, 12, 11, 12, 11, 11, 11 ]
+[ Infinity, Infinity, Infinity, Infinity, 16, 18, 17, 17, 16, 17, 16, 17, 16 ]
+Thus we have that (v(c_4), v(c_6), v(Delta)) = (8, 12, gt 24).
+By Papadopoulos Table IV, the reduction type is I_n, n > 0, and conductor 
+exponent f = 1.
+Double checking these valuations by sampling ... done.
+
+***************************
+Case 11 divides a + b for F
+***************************
+We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.
+The valuations of the coefficients are:
+[ 4, 4, 3, 3, 2 ]
+[ 6, 6, 5, 5, 4, 4, 3 ]
+[ Infinity, Infinity, Infinity, Infinity, 10, 10, 9, 9, 9, 9, 7, 7, 6 ]
+Thus we have that (v(c_4), v(c_6), v(Delta)) = (4, 6, gt 12)
+By Papadopoulos Table IV, the reduction type is I_n, n > 0, and conductor 
+exponent f = 1.
+Double checking these valuations by sampling ... done.
+
+**************************************************
+Case 11 does not divide a + b for E twisted by -11
+**************************************************
+We expand c_4, c_6, Delta into powers of a+b in order of increasing degree.
+The valuations of the coefficients are:
+[ 14, 14, 13, 13, 12 ]
+[ 21, 21, 20, 20, 19, 19, 18 ]
+[ Infinity, Infinity, Infinity, Infinity, 40, 40, 39, 39, 39, 39, 37, 37, 36 ]
+Thus we have that (v(c_4), v(c_6), v(Delta)) = (12, 18, 36).
+By Papadopoulos Table IV, the reduction type is I_0 and conductor exponent f = 
+0.
+Double checking these valuations by sampling ... done.
+Total time: 300.430 seconds, Total memory usage: 32.09MB

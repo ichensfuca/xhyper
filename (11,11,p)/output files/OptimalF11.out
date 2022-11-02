@@ -1,0 +1,63 @@
+Magma V2.26-12    Sat Sep 24 2022 12:48:35 on cecm-gaby [Seed = 2395121765]
+Type ? for help.  Type <Ctrl>-D to quit.
+Computing forms at level I2 ...
+Done !
+There are  1 newforms
+The degrees of coefficient fields are [ 2 ]
+++++++++++++++++++++++ Total running time (in hours) = 0.001
+
+Performing standard elimination for 1 form(s) with set of auxiliary primes [ 3, 
+23 ]
+
+Checking form no 1
+
+Dealing with q = 3
+This form can be eliminated for large enough p !
+Dealing with q = 23
+Form no 1
+with coefficient field : Number Field with defining polynomial x^2 + x - 1 over 
+the Rational Field
+is not eliminated for prime(s) : { 5, 31 }
+*************************************************************
+
+The refined elimination with q = 23 works. The form is eliminated for the given 
+subset of primes above p = 31
+Running time for this form (in seconds) = 0.330
+
+0.03333333334
+30*x - 1
+1.164153218E-10
+This shows that Zeta_Kf(-1) = 1/30
+Eliminated all forms at level I2
+++++++++++++++++++++++ Total running time (in hours) = 0.002
+
+Computing forms at level I2*I11...
+Done !
+There are  2 newforms
+The degrees of coefficient fields are [ 5, 5 ]
+++++++++++++++++++++++ Total running time (in hours) = 0.003
+
+Performing standard elimination for 2 form(s) with set of auxiliary primes [ 3, 
+23 ]
+
+Checking form no 1
+
+Dealing with q = 3
+This form can be eliminated for large enough p !
+Dealing with q = 23
+Form no 1 is eliminated
+*************************************************************
+
+Checking form no 2
+
+Dealing with q = 3
+This form can be eliminated for large enough p !
+Dealing with q = 23
+Form no 2 is eliminated
+*************************************************************
+
+Eliminated all forms at level I2*I11
+++++++++++++++++++++++ Total running time (in hours) = 0.005
+
+
+Total time: 19.259 seconds, Total memory usage: 216.75MB

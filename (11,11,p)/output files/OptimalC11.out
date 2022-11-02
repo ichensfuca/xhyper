@@ -1,0 +1,121 @@
+Magma V2.26-12    Fri Sep 23 2022 09:02:11 on cecm-gaby [Seed = 1713947858]
+Type ? for help.  Type <Ctrl>-D to quit.
+0.000
+0.001
+14
+[ 1, 1, 1, 1, 1, 1, 5, 10, 25, 25, 50, 60, 75, 120 ]
+6.175
+Eliminating forms by checking whether K is included in the field of 
+coefficients..
+The remaining forms are: [ 7, 8, 9, 10, 11, 12 ]
+Their coefficient fields have degree: [ 5, 10, 25, 25, 50, 60 ]
+6.218
+Starting elimination with set of auxiliary primes  [ 3, 5, 7, 23 ]
+++++++++++++++++++++++ 6.218
+
+++++++++++++++++++++++ 6.218
+
+working with form number 7
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 5, 11 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 5, 11 }
+trying auxiliary prime q = 23
+Computing Hecke eigenvalue ...
+...done.
+{ 2 }
+{ 2 }
+++++++++++++++++++++++ 6.480
+
+working with form number 8
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 3, 17 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 3 }
+{ 3 }
+++++++++++++++++++++++ 6.481
+
+working with form number 9
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 5 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 5 }
+trying auxiliary prime q = 23
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3 }
+{ 2, 3 }
+++++++++++++++++++++++ 6.589
+
+working with form number 10
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 5, 7, 13, 17 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 5, 7 }
+trying auxiliary prime q = 23
+Computing Hecke eigenvalue ...
+...done.
+{ 2 }
+{ 2 }
+++++++++++++++++++++++ 6.700
+
+working with form number 11
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 4621 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3 }
+{ 2, 3 }
+++++++++++++++++++++++ 6.730
+
+working with form number 12
+Computing Hecke eigenvalue ...
+...done.
+first bound obtained with auxiliary prime q = 3
+trying auxiliary prime q = 5
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 11, 41 }
+trying auxiliary prime q = 7
+Computing Hecke eigenvalue ...
+...done.
+{ 2, 3, 11 }
+{ 2, 3, 11 }
+{}
+6.997
+
+Total time: 25130.750 seconds, Total memory usage: 3974.09MB
