@@ -2,7 +2,7 @@
 
 The following are the electronic resources (programs, output files, timings) for the paper `On Darmon's program for the generalized Fermat equation' by Nicolas Billerey, Imin Chen, Luis Dieulefait, Nuno Freitas; with Appendix by Filip Najman.
 
-Remark: The programs were run on a 2.2/3.0 Ghz 8 core Intel Xeon E5-2660 machine with 64 Gb.
+Remark: The programs were run on a 2.2/3.0 Ghz 8 core Intel Xeon E5-2660 machine with 64 Gb using Magma.
 
 
 *****************
