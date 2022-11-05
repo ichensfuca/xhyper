@@ -23,6 +23,8 @@ Theorem 17.3:		  E_F_C_high_level.m (17 minutes)
 
 Theorem 17.4:		  E_F_C_small_level.m (1.3 minutes)
 
+Theorem 3.4: (r = 7)	OptimalF7.m (1.3 minutes)
+
 
 
 
@@ -36,7 +38,7 @@ Proposition 19.13:	IrreducibleF11.txt (30 minutes)
 
 Theorem 19.1:		    EliminateF11.txt (7 seconds)
 
-Theorem 3.4:		    OptimalF11.txt (20 seconds)
+Theorem 3.4: (r = 11)		    OptimalF11.txt (20 seconds)
 			              OptimalC11.txt (7 hours)
 
 
